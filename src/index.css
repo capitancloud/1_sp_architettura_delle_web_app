@@ -8,8 +8,8 @@
 
 @layer base {
   :root {
-    /* Dark blueprint theme */
-    --background: 220 20% 10%;
+    /* Pure black background */
+    --background: 0 0% 0%;
     --foreground: 210 20% 90%;
 
     --card: 220 20% 14%;
