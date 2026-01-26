@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Globe, Server, ArrowRight, Send, RotateCcw, Play } from "lucide-react";
+import { Globe, Server, ArrowRight, Send, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
 
 type FlowStep = "idle" | "click" | "action" | "update" | "render" | "done";
@@ -19,19 +19,39 @@ export function V3ModuleDataFlow({ onNext }: V3ModuleDataFlowProps) {
   const [flowStep, setFlowStep] = useState<FlowStep>("idle");
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const flowSteps = [
+  const flowSteps = useMemo(
+    () => [
     { id: "click", label: "Click nel Browser", icon: "🖱️", env: "client" },
     { id: "action", label: "Server Action chiamata", icon: "📤", env: "request" },
     { id: "update", label: "Stato aggiornato in RAM", icon: "💾", env: "server" },
     { id: "render", label: "Server re-renderizza", icon: "🔄", env: "server" },
     { id: "done", label: "UI aggiornata", icon: "✅", env: "client" },
-  ];
+    ],
+    []
+  );
+
+  const orderedStepIds = useMemo(() => ["click", "action", "update", "render", "done"] as const, []);
+
+  const getStepIndex = () => flowSteps.findIndex(s => s.id === flowStep);
+
+  const goToStepIndex = (idx: number) => {
+    if (isAnimating) return;
+    if (idx < 0) {
+      setFlowStep("idle");
+      return;
+    }
+    if (idx >= flowSteps.length) return;
+    setFlowStep(flowSteps[idx].id as FlowStep);
+  };
+
+  const goPrev = () => goToStepIndex(getStepIndex() - 1);
+  const goNext = () => goToStepIndex(getStepIndex() + 1);
 
   const runFlow = () => {
     if (!inputValue.trim()) return;
     
     setIsAnimating(true);
-    const steps: FlowStep[] = ["click", "action", "update", "render", "done"];
+    const steps: FlowStep[] = [...orderedStepIds];
     let i = 0;
 
     const interval = setInterval(() => {
@@ -58,8 +78,6 @@ export function V3ModuleDataFlow({ onNext }: V3ModuleDataFlowProps) {
     setInputValue("");
     setIsAnimating(false);
   };
-
-  const getStepIndex = () => flowSteps.findIndex(s => s.id === flowStep);
 
   return (
     <div className="space-y-6">
@@ -100,6 +118,24 @@ export function V3ModuleDataFlow({ onNext }: V3ModuleDataFlowProps) {
           <CardTitle className="text-lg flex items-center justify-between">
             <span>Flusso Completo</span>
             <div className="flex gap-2">
+              <div className="hidden sm:flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={goPrev}
+                  disabled={isAnimating || getStepIndex() <= 0}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={goNext}
+                  disabled={isAnimating || getStepIndex() >= flowSteps.length - 1}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
               <Button variant="outline" size="sm" onClick={reset}>
                 <RotateCcw className="w-4 h-4 mr-1" />
                 Reset
@@ -109,52 +145,93 @@ export function V3ModuleDataFlow({ onNext }: V3ModuleDataFlowProps) {
         </CardHeader>
         <CardContent>
           {/* Step Indicators */}
-          <div className="flex items-center justify-between mb-8 overflow-x-auto pb-2">
-            {flowSteps.map((step, i) => (
-              <div key={step.id} className="flex items-center">
-                <motion.div
-                  className={`
-                    flex flex-col items-center min-w-[80px]
-                    ${getStepIndex() >= i ? "opacity-100" : "opacity-40"}
-                  `}
-                  animate={{
-                    scale: flowStep === step.id ? 1.1 : 1,
-                  }}
-                >
-                  <div className={`
-                    w-12 h-12 rounded-full flex items-center justify-center text-xl
-                    border-2 transition-all
-                    ${flowStep === step.id 
-                      ? step.env === "client" 
-                        ? "border-client bg-client/20" 
-                        : step.env === "server"
-                          ? "border-server bg-server/20"
-                          : "border-request bg-request/20"
-                      : getStepIndex() > i
-                        ? "border-accent bg-accent/20"
-                        : "border-border bg-muted/20"
+          <div className="mb-6">
+            <div className="flex items-center justify-between overflow-x-auto overflow-y-visible py-3">
+              {flowSteps.map((step, i) => (
+                <div key={step.id} className="flex items-center">
+                  <motion.button
+                    type="button"
+                    disabled={isAnimating}
+                    onClick={() => goToStepIndex(i)}
+                    className={
+                      `flex flex-col items-center min-w-[92px] px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 rounded-md ` +
+                      `${getStepIndex() >= i ? "opacity-100" : "opacity-40"} ` +
+                      `${isAnimating ? "cursor-not-allowed" : "cursor-pointer"}`
                     }
-                  `}>
-                    {step.icon}
-                  </div>
-                  <span className="text-xs mt-2 text-center font-medium">{step.label}</span>
-                  <Badge 
-                    variant="outline" 
-                    className={`mt-1 text-[10px] ${
-                      step.env === "client" ? "text-client" : 
-                      step.env === "server" ? "text-server" : "text-request"
-                    }`}
+                    animate={{
+                      scale: flowStep === step.id ? 1.06 : 1,
+                    }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
                   >
-                    {step.env === "client" ? "Browser" : step.env === "server" ? "Server" : "HTTP"}
-                  </Badge>
-                </motion.div>
-                {i < flowSteps.length - 1 && (
-                  <ArrowRight className={`w-6 h-6 mx-2 ${
-                    getStepIndex() > i ? "text-accent" : "text-muted-foreground/30"
-                  }`} />
-                )}
-              </div>
-            ))}
+                    <div className={
+                      `w-12 h-12 rounded-full flex items-center justify-center text-xl border-2 transition-all ` +
+                      (flowStep === step.id
+                        ? step.env === "client"
+                          ? "border-client bg-client/20"
+                          : step.env === "server"
+                            ? "border-server bg-server/20"
+                            : "border-request bg-request/20"
+                        : getStepIndex() > i
+                          ? "border-accent bg-accent/20"
+                          : "border-border bg-muted/20")
+                    }>
+                      {step.icon}
+                    </div>
+                    <span className="text-xs mt-2 text-center font-medium leading-tight">{step.label}</span>
+                    <Badge
+                      variant="outline"
+                      className={`mt-1 text-[10px] ${
+                        step.env === "client" ? "text-client" :
+                        step.env === "server" ? "text-server" : "text-request"
+                      }`}
+                    >
+                      {step.env === "client" ? "Browser" : step.env === "server" ? "Server" : "HTTP"}
+                    </Badge>
+                  </motion.button>
+                  {i < flowSteps.length - 1 && (
+                    <ArrowRight
+                      className={`w-6 h-6 mx-2 ${
+                        getStepIndex() > i ? "text-accent" : "text-muted-foreground/30"
+                      }`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Manual step dots (mobile + quick navigation) */}
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={goPrev}
+                disabled={isAnimating || getStepIndex() <= 0}
+                className="sm:hidden"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              {flowSteps.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => goToStepIndex(i)}
+                  disabled={isAnimating}
+                  className={`h-2 rounded-full transition-all ${
+                    i === getStepIndex() ? "w-6 bg-request" : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                  } ${isAnimating ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                  aria-label={`Vai allo step ${i + 1}: ${s.label}`}
+                />
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={goNext}
+                disabled={isAnimating || getStepIndex() >= flowSteps.length - 1}
+                className="sm:hidden"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
 
           {/* Interactive Demo */}
