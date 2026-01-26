@@ -1,0 +1,97 @@
+// Configurazione delle versioni dell'app educativa
+
+export interface ModuleConfig {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+}
+
+export interface VersionConfig {
+  id: string;
+  path: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  color: string; // tailwind color class
+  modules: ModuleConfig[];
+  isAvailable: boolean;
+}
+
+export const versions: VersionConfig[] = [
+  {
+    id: "v1",
+    path: "/v1",
+    title: "Versione 1",
+    subtitle: "Le Basi",
+    description: "Client, Server, HTTP Request/Response. Il ciclo fondamentale di comunicazione tra browser e server.",
+    icon: "🌱",
+    color: "client",
+    modules: [
+      { id: "overview", title: "Panoramica", subtitle: "Chi fa cosa?", icon: "🏠" },
+      { id: "client", title: "Il Client", subtitle: "Frontend", icon: "🌐" },
+      { id: "request", title: "Request HTTP", subtitle: "Dal client al server", icon: "→" },
+      { id: "server", title: "Il Server", subtitle: "Backend", icon: "🖥️" },
+      { id: "response", title: "Response HTTP", subtitle: "Dal server al client", icon: "←" },
+      { id: "ui-update", title: "Aggiornamento UI", subtitle: "Il ciclo completo", icon: "🔄" },
+    ],
+    isAvailable: true,
+  },
+  {
+    id: "v2",
+    path: "/v2",
+    title: "Versione 2",
+    subtitle: "Persistenza",
+    description: "Database, Storage, Sessioni. Come i dati sopravvivono al riavvio del server.",
+    icon: "💾",
+    color: "server",
+    modules: [
+      { id: "overview", title: "Panoramica", subtitle: "Perché serve persistenza?", icon: "🏠" },
+      { id: "file-system", title: "File System", subtitle: "Salvare su disco", icon: "📁" },
+      { id: "database", title: "Database SQL", subtitle: "Dati strutturati", icon: "🗄️" },
+      { id: "sessions", title: "Sessioni", subtitle: "Ricordare l'utente", icon: "🔐" },
+    ],
+    isAvailable: false,
+  },
+  {
+    id: "v3",
+    path: "/v3",
+    title: "Versione 3",
+    subtitle: "Autenticazione",
+    description: "Login, Token, Sicurezza. Come proteggere le risorse e identificare gli utenti.",
+    icon: "🔐",
+    color: "request",
+    modules: [
+      { id: "overview", title: "Panoramica", subtitle: "Chi sei tu?", icon: "🏠" },
+      { id: "passwords", title: "Password", subtitle: "Hashing sicuro", icon: "🔑" },
+      { id: "tokens", title: "Token JWT", subtitle: "Autenticazione stateless", icon: "🎫" },
+      { id: "cookies", title: "Cookies", subtitle: "Memorizzare sessioni", icon: "🍪" },
+    ],
+    isAvailable: false,
+  },
+  {
+    id: "v4",
+    path: "/v4",
+    title: "Versione 4",
+    subtitle: "App Completa",
+    description: "CRUD, API REST, Deploy. Un'applicazione full stack funzionante da zero.",
+    icon: "🚀",
+    color: "accent",
+    modules: [
+      { id: "overview", title: "Panoramica", subtitle: "Il progetto finale", icon: "🏠" },
+      { id: "crud", title: "CRUD", subtitle: "Create, Read, Update, Delete", icon: "📝" },
+      { id: "rest-api", title: "API REST", subtitle: "Convenzioni e routing", icon: "🔌" },
+      { id: "deploy", title: "Deploy", subtitle: "Mettere online", icon: "☁️" },
+    ],
+    isAvailable: false,
+  },
+];
+
+export const getVersionById = (id: string): VersionConfig | undefined => {
+  return versions.find(v => v.id === id);
+};
+
+export const getVersionByPath = (path: string): VersionConfig | undefined => {
+  return versions.find(v => v.path === path);
+};
