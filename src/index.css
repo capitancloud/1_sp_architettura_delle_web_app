@@ -2,95 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Educational App Design System - Blueprint/Technical Style */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark blueprint theme */
+    --background: 220 20% 10%;
+    --foreground: 210 20% 90%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 20% 14%;
+    --card-foreground: 210 20% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 210 20% 90%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Client/Browser - Cyan */
+    --primary: 185 80% 50%;
+    --primary-foreground: 220 20% 10%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Server - Orange/Amber */
+    --secondary: 35 90% 55%;
+    --secondary-foreground: 220 20% 10%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted elements */
+    --muted: 220 15% 20%;
+    --muted-foreground: 210 15% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Success green for data flow */
+    --accent: 150 70% 45%;
+    --accent-foreground: 220 20% 10%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Destructive - Error red */
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 210 20% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 15% 25%;
+    --input: 220 15% 20%;
+    --ring: 185 80% 50%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Custom educational colors */
+    --client: 185 80% 50%;
+    --client-glow: 185 80% 60%;
+    --server: 35 90% 55%;
+    --server-glow: 35 90% 65%;
+    --request: 280 70% 60%;
+    --response: 150 70% 50%;
+    --data-flow: 150 70% 45%;
+    --highlight: 45 100% 60%;
+    
+    /* Grid background */
+    --grid-color: 220 15% 18%;
+    
+    /* Sidebar */
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 185 80% 50%;
+    --sidebar-primary-foreground: 220 20% 10%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 185 80% 50%;
   }
 }
 
@@ -100,6 +75,168 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  code, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Blueprint grid background */
+  .blueprint-grid {
+    background-image: 
+      linear-gradient(hsl(var(--grid-color)) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--grid-color)) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Glowing elements */
+  .glow-client {
+    box-shadow: 0 0 20px hsl(var(--client) / 0.3), 0 0 40px hsl(var(--client) / 0.1);
+  }
+
+  .glow-server {
+    box-shadow: 0 0 20px hsl(var(--server) / 0.3), 0 0 40px hsl(var(--server) / 0.1);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.3), 0 0 40px hsl(var(--accent) / 0.1);
+  }
+
+  /* Connection line animation */
+  .connection-line {
+    stroke-dasharray: 8 4;
+    animation: dash 1s linear infinite;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+
+  /* Pulse animation for active elements */
+  .pulse-client {
+    animation: pulse-client 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-client {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--client) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--client) / 0.5);
+    }
+  }
+
+  .pulse-server {
+    animation: pulse-server 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-server {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--server) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--server) / 0.5);
+    }
+  }
+
+  /* Data packet animation */
+  .data-packet {
+    animation: packet-pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes packet-pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+  }
+
+  /* Code block styling */
+  .code-block {
+    @apply font-mono text-sm p-4 rounded-lg bg-card border border-border;
+  }
+
+  /* Educational highlight */
+  .edu-highlight {
+    @apply relative;
+  }
+
+  .edu-highlight::after {
+    content: '';
+    @apply absolute inset-0 rounded-lg pointer-events-none;
+    box-shadow: 0 0 0 2px hsl(var(--highlight));
+    animation: highlight-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes highlight-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Navigation item */
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300;
+    @apply text-muted-foreground hover:text-foreground hover:bg-muted/50;
+  }
+
+  .nav-item.active {
+    @apply bg-primary/10 text-primary border-l-2 border-primary;
+  }
+
+  /* Module card */
+  .module-card {
+    @apply p-6 rounded-xl bg-card border border-border transition-all duration-300;
+  }
+
+  .module-card:hover {
+    @apply border-primary/50;
+  }
+}
+
+@layer utilities {
+  .text-client {
+    color: hsl(var(--client));
+  }
+
+  .text-server {
+    color: hsl(var(--server));
+  }
+
+  .text-request {
+    color: hsl(var(--request));
+  }
+
+  .text-response {
+    color: hsl(var(--response));
+  }
+
+  .bg-client {
+    background-color: hsl(var(--client));
+  }
+
+  .bg-server {
+    background-color: hsl(var(--server));
+  }
+
+  .border-client {
+    border-color: hsl(var(--client));
+  }
+
+  .border-server {
+    border-color: hsl(var(--server));
   }
 }
