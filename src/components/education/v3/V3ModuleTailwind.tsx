@@ -30,10 +30,39 @@ export function V3ModuleTailwind({ onNext }: V3ModuleTailwindProps) {
     { class: "rounded-lg", description: "Border radius grande" },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 120,
+        damping: 14
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center">
+      <motion.div 
+        className="text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Badge className="mb-2 bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
           Tailwind CSS
         </Badge>
@@ -43,26 +72,35 @@ export function V3ModuleTailwind({ onNext }: V3ModuleTailwindProps) {
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Tailwind è un framework CSS che usa classi utility per stilizzare direttamente nell'HTML.
         </p>
-      </div>
+      </motion.div>
 
       {/* What is Tailwind */}
-      <Card className="border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-transparent">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Paintbrush className="w-5 h-5 text-cyan-400" />
-            Cos'è Tailwind CSS?
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Invece di scrivere CSS in file separati, applichi <strong>classi utility</strong> 
-            direttamente sugli elementi. Ogni classe fa una cosa sola.
-          </p>
-          
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-lg border border-muted bg-muted/20">
-              <p className="text-sm font-medium mb-2">📝 CSS Tradizionale</p>
-              <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto">
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Card className="border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-transparent">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Paintbrush className="w-5 h-5 text-cyan-400" />
+              Cos'è Tailwind CSS?
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground mb-4">
+              Invece di scrivere CSS in file separati, applichi <strong>classi utility</strong> 
+              direttamente sugli elementi. Ogni classe fa una cosa sola.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <motion.div 
+                className="p-4 rounded-lg border border-muted bg-muted/20"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <p className="text-sm font-medium mb-2">📝 CSS Tradizionale</p>
+                <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto">
 {`/* styles.css */
 .card {
   padding: 1rem;
@@ -73,11 +111,15 @@ export function V3ModuleTailwind({ onNext }: V3ModuleTailwindProps) {
 
 /* HTML */
 <div class="card">...</div>`}
-              </pre>
-            </div>
-            <div className="p-4 rounded-lg border border-cyan-500/30 bg-cyan-500/5">
-              <p className="text-sm font-medium text-cyan-400 mb-2">⚡ Tailwind CSS</p>
-              <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto">
+                </pre>
+              </motion.div>
+              <motion.div 
+                className="p-4 rounded-lg border border-cyan-500/30 bg-cyan-500/5"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <p className="text-sm font-medium text-cyan-400 mb-2">⚡ Tailwind CSS</p>
+                <pre className="text-xs font-mono bg-muted/50 p-3 rounded overflow-x-auto">
 {`<!-- Nessun file CSS separato! -->
 
 <div class="p-4 bg-white rounded-lg shadow">
@@ -85,31 +127,45 @@ export function V3ModuleTailwind({ onNext }: V3ModuleTailwindProps) {
 </div>
 
 <!-- Tutto inline, leggibile e prevedibile -->`}
-              </pre>
+                </pre>
+              </motion.div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Utility Classes Reference */}
-      <Card className="border-border/50">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Classi Utility Comuni</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {utilityExamples.map((item) => (
-              <div 
-                key={item.class}
-                className="p-3 rounded-lg border border-border/50 bg-muted/20"
-              >
-                <code className="text-sm font-mono text-cyan-400">{item.class}</code>
-                <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        <Card className="border-border/50">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Classi Utility Comuni</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <motion.div 
+              className="grid grid-cols-2 md:grid-cols-3 gap-3"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {utilityExamples.map((item) => (
+                <motion.div 
+                  key={item.class}
+                  className="p-3 rounded-lg border border-border/50 bg-muted/20 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-colors cursor-default"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05, y: -3 }}
+                >
+                  <code className="text-sm font-mono text-cyan-400">{item.class}</code>
+                  <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Interactive Examples */}
       <Card className="border-border/50">
@@ -211,11 +267,18 @@ export function V3ModuleTailwind({ onNext }: V3ModuleTailwindProps) {
                   </pre>
                 </div>
                 <div>
-                  <p className="text-sm font-medium mb-2">Risultato (prova hover):</p>
-                  <div className="p-4 bg-muted/30 rounded-lg flex items-center justify-center">
-                    <button className="px-4 py-2 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-lg font-medium transition-colors">
+                  <p className="text-sm font-medium mb-2">Risultato (prova hover e click):</p>
+                  <div className="p-4 bg-muted/30 rounded-lg flex flex-col items-center justify-center gap-4">
+                    <motion.button 
+                      className="px-6 py-3 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-lg font-medium transition-colors shadow-lg"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                       Hover me!
-                    </button>
+                    </motion.button>
+                    <p className="text-xs text-muted-foreground">
+                      👆 Passa il mouse sopra e clicca per vedere gli stati
+                    </p>
                   </div>
                 </div>
               </div>
@@ -247,21 +310,32 @@ export function V3ModuleTailwind({ onNext }: V3ModuleTailwindProps) {
   Contenuto adattivo
 </div>`}
             </pre>
-            <div className="space-y-2">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setIsDarkPreview(!isDarkPreview)}
-              >
-                Toggle Preview: {isDarkPreview ? "Dark" : "Light"}
-              </Button>
-              <div className={`p-4 rounded-lg transition-colors ${
+            <div className="space-y-3">
+              <motion.div whileTap={{ scale: 0.98 }}>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setIsDarkPreview(!isDarkPreview)}
+                  className="gap-2"
+                >
+                  <Moon className="w-4 h-4" />
+                  Toggle Preview: {isDarkPreview ? "Dark" : "Light"}
+                </Button>
+              </motion.div>
+              <motion.div 
+                className={`p-4 rounded-lg transition-all duration-300 ${
                 isDarkPreview 
                   ? "bg-gray-900 text-white" 
                   : "bg-white text-gray-900 border"
-              }`}>
+                }`}
+                animate={{ 
+                  backgroundColor: isDarkPreview ? "#111827" : "#ffffff",
+                  color: isDarkPreview ? "#ffffff" : "#111827"
+                }}
+                transition={{ duration: 0.3 }}
+              >
                 Contenuto adattivo
-              </div>
+              </motion.div>
             </div>
           </div>
         </CardContent>
