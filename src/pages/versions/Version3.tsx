@@ -12,6 +12,7 @@ import { V3ModuleServerComponents } from "@/components/education/v3/V3ModuleServ
 import { V3ModuleDataFlow } from "@/components/education/v3/V3ModuleDataFlow";
 import { V3ModuleSSR } from "@/components/education/v3/V3ModuleSSR";
 import { V3ModuleTypeScript } from "@/components/education/v3/V3ModuleTypeScript";
+import { V3ModuleSummary } from "@/components/education/v3/V3ModuleSummary";
 
 const moduleComponents = [
   V3ModuleIntro,
@@ -22,6 +23,7 @@ const moduleComponents = [
   V3ModuleDataFlow,
   V3ModuleSSR,
   V3ModuleTypeScript,
+  V3ModuleSummary,
 ];
 
 export default function Version3() {
