@@ -6,8 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Send, Server, Globe, Eye, ChevronLeft, ChevronRight, RotateCcw, Play } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleInterfaceProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleInterface() {
+export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<string[]>(["Messaggio di esempio", "Un altro messaggio"]);
   const [lastAction, setLastAction] = useState<"none" | "typing" | "click" | "render">("none");

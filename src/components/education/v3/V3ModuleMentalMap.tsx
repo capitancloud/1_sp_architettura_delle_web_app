@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RotateCcw, Folder, Server, Globe, ArrowRight } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleMentalMapProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleMentalMap() {
+export function V3ModuleMentalMap({ onNext }: V3ModuleMentalMapProps) {
   const [step, setStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 

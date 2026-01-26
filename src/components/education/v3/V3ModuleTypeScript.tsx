@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileCode, Server, Globe, Eye, EyeOff, ChevronLeft, ChevronRight, Check, X } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleTypeScriptProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleTypeScript() {
+export function V3ModuleTypeScript({ onNext }: V3ModuleTypeScriptProps) {
   const [step, setStep] = useState(0);
   const [showContract, setShowContract] = useState(false);
   const [highlightUsage, setHighlightUsage] = useState(false);

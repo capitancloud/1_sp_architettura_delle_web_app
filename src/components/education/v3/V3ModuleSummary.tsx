@@ -15,8 +15,11 @@ import {
   ChevronUp
 } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleSummaryProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleSummary() {
+export function V3ModuleSummary({ onNext }: V3ModuleSummaryProps) {
   const [expandedConcept, setExpandedConcept] = useState<string | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<Record<number, string>>({});

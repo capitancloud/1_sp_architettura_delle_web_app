@@ -6,8 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Globe, MousePointer, Keyboard, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleClientComponentsProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleClientComponents() {
+export function V3ModuleClientComponents({ onNext }: V3ModuleClientComponentsProps) {
   const [inputValue, setInputValue] = useState("");
   const [clickCount, setClickCount] = useState(0);
   const [step, setStep] = useState(0);
