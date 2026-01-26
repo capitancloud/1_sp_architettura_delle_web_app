@@ -211,7 +211,7 @@ export function V4Module7Summary({ onNext }: V4Module7SummaryProps) {
       </div>
 
       {/* Timeline visualization */}
-      <div className="relative overflow-x-auto pb-4">
+      <div className="relative overflow-x-auto overflow-y-visible py-4">
         <div className="flex gap-3 min-w-max px-4">
           {timeline.map((step, i) => (
             <motion.div
