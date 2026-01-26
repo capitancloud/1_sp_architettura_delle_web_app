@@ -1,21 +1,53 @@
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { VersionLayout } from "@/layouts/VersionLayout";
 import { getVersionById } from "@/config/versions";
 
+// Import dei moduli V4
+import { V4Module0Intro } from "@/components/education/v4/V4Module0Intro";
+import { V4Module1Architecture } from "@/components/education/v4/V4Module1Architecture";
+import { V4Module2MultiUser } from "@/components/education/v4/V4Module2MultiUser";
+import { V4Module3DataModel } from "@/components/education/v4/V4Module3DataModel";
+import { V4Module4Auth } from "@/components/education/v4/V4Module4Auth";
+import { V4Module5Backend } from "@/components/education/v4/V4Module5Backend";
+import { V4Module6Deploy } from "@/components/education/v4/V4Module6Deploy";
+import { V4Module7Summary } from "@/components/education/v4/V4Module7Summary";
+
+const moduleComponents = [
+  V4Module0Intro,
+  V4Module1Architecture,
+  V4Module2MultiUser,
+  V4Module3DataModel,
+  V4Module4Auth,
+  V4Module5Backend,
+  V4Module6Deploy,
+  V4Module7Summary,
+];
+
 export default function Version4() {
+  const [currentModule, setCurrentModule] = useState(0);
+  
   const version = getVersionById("v4");
   
-  if (!version?.isAvailable) {
+  if (!version || !version.isAvailable) {
     return <Navigate to="/" replace />;
   }
 
+  const CurrentModuleComponent = moduleComponents[currentModule];
+
+  const goToNextModule = () => {
+    if (currentModule < moduleComponents.length - 1) {
+      setCurrentModule(currentModule + 1);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center">
-        <span className="text-6xl mb-4 block">{version.icon}</span>
-        <h1 className="text-2xl font-bold mb-2">{version.title}</h1>
-        <p className="text-muted-foreground">{version.subtitle}</p>
-        <p className="text-sm text-muted-foreground mt-4">In costruzione...</p>
-      </div>
-    </div>
+    <VersionLayout
+      version={version}
+      currentModuleIndex={currentModule}
+      onModuleChange={setCurrentModule}
+    >
+      <CurrentModuleComponent onNext={goToNextModule} />
+    </VersionLayout>
   );
 }
