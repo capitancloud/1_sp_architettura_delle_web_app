@@ -4,13 +4,50 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Send, Server, Globe, Eye } from "lucide-react";
+import { Send, Server, Globe, Eye, ChevronLeft, ChevronRight, RotateCcw, Play } from "lucide-react";
 
 export function V3ModuleInterface() {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<string[]>(["Messaggio di esempio", "Un altro messaggio"]);
   const [lastAction, setLastAction] = useState<"none" | "typing" | "click" | "render">("none");
   const [showLegend, setShowLegend] = useState(true);
+  const [step, setStep] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+
+  const steps = [
+    { 
+      id: "intro", 
+      title: "Interfaccia Utente", 
+      description: "Questa è un'interfaccia semplice: input, bottone, lista messaggi",
+      highlight: "none"
+    },
+    { 
+      id: "input", 
+      title: "Input (Browser)", 
+      description: "L'input è un Client Component - gestisce eventi nel browser",
+      highlight: "client"
+    },
+    { 
+      id: "click", 
+      title: "Click Invia (Browser)", 
+      description: "Il click attiva una Server Action - la richiesta va al server",
+      highlight: "client"
+    },
+    { 
+      id: "server", 
+      title: "Lista (Server)", 
+      description: "La lista è un Server Component - renderizzata sul server",
+      highlight: "server"
+    },
+    { 
+      id: "summary", 
+      title: "Riepilogo", 
+      description: "Input+eventi = Browser, Dati+lista = Server",
+      highlight: "both"
+    },
+  ];
+
+  const currentStep = steps[step];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -27,6 +64,28 @@ export function V3ModuleInterface() {
         setTimeout(() => setLastAction("none"), 2000);
       }, 1000);
     }
+  };
+
+  const runAutoPlay = () => {
+    setIsAutoPlaying(true);
+    setStep(0);
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      if (currentStep >= steps.length) {
+        clearInterval(interval);
+        setIsAutoPlaying(false);
+      } else {
+        setStep(currentStep);
+      }
+    }, 2500);
+  };
+
+  const resetDemo = () => {
+    setStep(0);
+    setMessages(["Messaggio di esempio", "Un altro messaggio"]);
+    setInputValue("");
+    setLastAction("none");
   };
 
   return (
@@ -125,22 +184,73 @@ export function V3ModuleInterface() {
         </Card>
 
         {/* Interactive Demo */}
-        <Card className="lg:col-span-2 border-border/50">
+        <Card className={`lg:col-span-2 border-2 transition-all ${
+          currentStep.highlight === "both" ? "border-purple-500" : "border-border/50"
+        }`}>
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Demo Interattiva</CardTitle>
+            <CardTitle className="text-lg flex items-center justify-between">
+              <span>Demo Interattiva</span>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={resetDemo} disabled={isAutoPlaying}>
+                  <RotateCcw className="w-4 h-4" />
+                </Button>
+                <Button variant="outline" size="sm" onClick={runAutoPlay} disabled={isAutoPlaying}>
+                  <Play className="w-4 h-4 mr-1" />
+                  {isAutoPlaying ? "..." : "Auto"}
+                </Button>
+              </div>
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Step Controls */}
+            <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
+              <div className="flex items-center justify-between mb-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setStep(s => Math.max(0, s - 1))}
+                  disabled={step === 0 || isAutoPlaying}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <div className="text-center flex-1 px-4">
+                  <Badge variant="outline" className="mb-1">{step + 1}/{steps.length}</Badge>
+                  <p className="font-medium text-sm">{currentStep.title}</p>
+                  <p className="text-xs text-muted-foreground">{currentStep.description}</p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setStep(s => Math.min(steps.length - 1, s + 1))}
+                  disabled={step === steps.length - 1 || isAutoPlaying}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex justify-center gap-2">
+                {steps.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => !isAutoPlaying && setStep(i)}
+                    disabled={isAutoPlaying}
+                    className={`h-2 rounded-full transition-all ${
+                      i === step ? "w-6 bg-purple-500" : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
             {/* Input Area - Client */}
             <motion.div
               className={`
                 p-4 rounded-lg border-2 transition-all
-                ${lastAction === "typing" || lastAction === "click"
-                  ? "border-client bg-client/5"
+                ${(currentStep.highlight === "client" || currentStep.highlight === "both") || lastAction === "typing" || lastAction === "click"
+                  ? "border-client bg-client/5 ring-2 ring-client/20"
                   : "border-border/30"
                 }
               `}
               animate={{
-                scale: lastAction === "typing" || lastAction === "click" ? 1.01 : 1,
+                scale: (currentStep.highlight === "client" || lastAction === "typing" || lastAction === "click") ? 1.01 : 1,
               }}
             >
               <div className="flex items-center gap-2 mb-3">
@@ -209,13 +319,13 @@ export function V3ModuleInterface() {
             <motion.div
               className={`
                 p-4 rounded-lg border-2 transition-all
-                ${lastAction === "render"
-                  ? "border-server bg-server/5"
+                ${(currentStep.highlight === "server" || currentStep.highlight === "both") || lastAction === "render"
+                  ? "border-server bg-server/5 ring-2 ring-server/20"
                   : "border-border/30"
                 }
               `}
               animate={{
-                scale: lastAction === "render" ? 1.01 : 1,
+                scale: (currentStep.highlight === "server" || lastAction === "render") ? 1.01 : 1,
               }}
             >
               <div className="flex items-center gap-2 mb-3">
