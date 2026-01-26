@@ -43,7 +43,7 @@ const Home = () => {
         </motion.div>
 
         {/* Version Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           {versions.map((version, index) => (
             <motion.div
               key={version.id}
