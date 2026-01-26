@@ -22,7 +22,7 @@ export function ModuleServer() {
         if (s === 5) {
           setIsProcessing(false);
         }
-      }, (i + 1) * 1200);
+      }, (i + 1) * 2500); // Rallentato da 1200ms a 2500ms per step
     });
   };
 
