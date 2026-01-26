@@ -97,7 +97,7 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
       } else {
         setStep(currentStepIndex);
       }
-    }, 4000);
+    }, 5000); // 5 secondi per step
   };
 
   const resetDemo = () => {
@@ -272,9 +272,9 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
                 }
               `}
               animate={{
-                scale: isClientHighlighted ? 1.01 : 1,
+                scale: isClientHighlighted ? 1.02 : 1,
               }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
             >
               <div className="flex items-center gap-2 mb-3">
                 <Globe className="w-4 h-4 text-client" />
@@ -348,9 +348,9 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
                 }
               `}
               animate={{
-                scale: isServerHighlighted ? 1.01 : 1,
+                scale: isServerHighlighted ? 1.02 : 1,
               }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
             >
               <div className="flex items-center gap-2 mb-3">
                 <Server className="w-4 h-4 text-server" />
