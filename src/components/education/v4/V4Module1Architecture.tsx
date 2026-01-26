@@ -246,7 +246,10 @@ export function V4Module1Architecture({ onNext }: V4Module1ArchitectureProps) {
                 onClick={() => !isAnimating && setActiveLayer(layer.id)}
               >
                 <div className="text-center mb-4">
-                  <Badge variant="secondary" className={`${layer.color} mb-2`}>
+                  <Badge 
+                    variant="outline" 
+                    className={`${layer.color} border-current bg-background/80 mb-2`}
+                  >
                     {layer.badge}
                   </Badge>
                   <h3 className={`text-xl font-bold ${layer.color}`}>{layer.label}</h3>
