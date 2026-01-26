@@ -74,6 +74,7 @@ export const versions: VersionConfig[] = [
       { id: "data-flow", title: "Flusso Dati", subtitle: "Server Actions", icon: "🔄" },
       { id: "ssr", title: "SSR", subtitle: "Rendering lato server", icon: "📄" },
       { id: "typescript", title: "TypeScript", subtitle: "Tipi come contratti", icon: "📝" },
+      { id: "summary", title: "Riepilogo", subtitle: "Cosa hai imparato", icon: "🏆" },
     ],
     isAvailable: true,
   },
