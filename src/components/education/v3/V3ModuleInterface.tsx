@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,41 +17,47 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
   const [showLegend, setShowLegend] = useState(true);
   const [step, setStep] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const [manualHighlight, setManualHighlight] = useState<"none" | "client" | "server" | "both">("none");
 
   const steps = [
     { 
       id: "intro", 
       title: "Interfaccia Utente", 
       description: "Questa è un'interfaccia semplice: input, bottone, lista messaggi",
-      highlight: "none"
+      highlight: "none" as const
     },
     { 
       id: "input", 
       title: "Input (Browser)", 
       description: "L'input è un Client Component - gestisce eventi nel browser",
-      highlight: "client"
+      highlight: "client" as const
     },
     { 
       id: "click", 
       title: "Click Invia (Browser)", 
       description: "Il click attiva una Server Action - la richiesta va al server",
-      highlight: "client"
+      highlight: "client" as const
     },
     { 
       id: "server", 
       title: "Lista (Server)", 
       description: "La lista è un Server Component - renderizzata sul server",
-      highlight: "server"
+      highlight: "server" as const
     },
     { 
       id: "summary", 
       title: "Riepilogo", 
       description: "Input+eventi = Browser, Dati+lista = Server",
-      highlight: "both"
+      highlight: "both" as const
     },
   ];
 
   const currentStep = steps[step];
+
+  // Sincronizza l'highlight manuale con lo step corrente
+  useEffect(() => {
+    setManualHighlight(currentStep.highlight);
+  }, [step, currentStep.highlight]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -70,17 +76,26 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
     }
   };
 
+  const handleStepChange = (newStep: number) => {
+    if (!isAutoPlaying && newStep >= 0 && newStep < steps.length) {
+      setStep(newStep);
+      // Reset lastAction quando si naviga manualmente per evitare conflitti
+      setLastAction("none");
+    }
+  };
+
   const runAutoPlay = () => {
     setIsAutoPlaying(true);
     setStep(0);
-    let currentStep = 0;
+    setLastAction("none");
+    let currentStepIndex = 0;
     const interval = setInterval(() => {
-      currentStep++;
-      if (currentStep >= steps.length) {
+      currentStepIndex++;
+      if (currentStepIndex >= steps.length) {
         clearInterval(interval);
         setIsAutoPlaying(false);
       } else {
-        setStep(currentStep);
+        setStep(currentStepIndex);
       }
     }, 2500);
   };
@@ -90,7 +105,12 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
     setMessages(["Messaggio di esempio", "Un altro messaggio"]);
     setInputValue("");
     setLastAction("none");
+    setManualHighlight("none");
   };
+
+  // Determina se un'area deve essere evidenziata
+  const isClientHighlighted = manualHighlight === "client" || manualHighlight === "both" || lastAction === "typing" || lastAction === "click";
+  const isServerHighlighted = manualHighlight === "server" || manualHighlight === "both" || lastAction === "render";
 
   return (
     <div className="space-y-6">
@@ -210,7 +230,7 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setStep(s => Math.max(0, s - 1))}
+                  onClick={() => handleStepChange(step - 1)}
                   disabled={step === 0 || isAutoPlaying}
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -223,7 +243,7 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setStep(s => Math.min(steps.length - 1, s + 1))}
+                  onClick={() => handleStepChange(step + 1)}
                   disabled={step === steps.length - 1 || isAutoPlaying}
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -233,11 +253,11 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
                 {steps.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => !isAutoPlaying && setStep(i)}
+                    onClick={() => handleStepChange(i)}
                     disabled={isAutoPlaying}
-                    className={`h-2 rounded-full transition-all ${
+                    className={`h-2 rounded-full transition-all cursor-pointer ${
                       i === step ? "w-6 bg-purple-500" : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                    }`}
+                    } ${isAutoPlaying ? "cursor-not-allowed opacity-50" : ""}`}
                   />
                 ))}
               </div>
@@ -246,14 +266,15 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
             <motion.div
               className={`
                 p-4 rounded-lg border-2 transition-all
-                ${(currentStep.highlight === "client" || currentStep.highlight === "both") || lastAction === "typing" || lastAction === "click"
+                ${isClientHighlighted
                   ? "border-client bg-client/5 ring-2 ring-client/20"
                   : "border-border/30"
                 }
               `}
               animate={{
-                scale: (currentStep.highlight === "client" || lastAction === "typing" || lastAction === "click") ? 1.01 : 1,
+                scale: isClientHighlighted ? 1.01 : 1,
               }}
+              transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-2 mb-3">
                 <Globe className="w-4 h-4 text-client" />
@@ -321,14 +342,15 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
             <motion.div
               className={`
                 p-4 rounded-lg border-2 transition-all
-                ${(currentStep.highlight === "server" || currentStep.highlight === "both") || lastAction === "render"
+                ${isServerHighlighted
                   ? "border-server bg-server/5 ring-2 ring-server/20"
                   : "border-border/30"
                 }
               `}
               animate={{
-                scale: (currentStep.highlight === "server" || lastAction === "render") ? 1.01 : 1,
+                scale: isServerHighlighted ? 1.01 : 1,
               }}
+              transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-2 mb-3">
                 <Server className="w-4 h-4 text-server" />
