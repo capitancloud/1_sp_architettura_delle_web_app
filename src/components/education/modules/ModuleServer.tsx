@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Server, HardDrive, Code, Cpu } from "lucide-react";
-import { DiagramBox, CodeBlock, HighlightBox, MemoryBlock } from "../DiagramElements";
+import { DiagramBox, CodeBlock, HighlightBox, MemoryBlock, ExplainerBox } from "../DiagramElements";
 import { useState, useEffect } from "react";
 
 export function ModuleServer() {
@@ -250,6 +250,34 @@ server.listen(3000, () => {
             <li>• Costruiamo la response manualmente</li>
           </ul>
         </motion.div>
+      </div>
+
+      {/* Explainer Boxes */}
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+        <ExplainerBox type="analogy">
+          Il server è come un <strong>cuoco in cucina</strong>: sta sempre in attesa di ordini (request),
+          li prepara usando gli ingredienti in dispensa (RAM), e rispedisce i piatti (response) al cliente.
+        </ExplainerBox>
+
+        <ExplainerBox type="warning" title="Attenzione: Dati in RAM">
+          Se il server si spegne o riavvia, <strong>tutti i dati vanno persi</strong>!
+          Per questo nella realtà si usano i <strong>database</strong> (PostgreSQL, MongoDB...) 
+          che salvano i dati su disco.
+        </ExplainerBox>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-4">
+        <ExplainerBox type="why" title="Perché Node.js?">
+          Node.js permette di usare <strong>JavaScript anche lato server</strong>. 
+          Così puoi usare lo stesso linguaggio sia per frontend che backend!
+          Ma il server potrebbe essere scritto in Python, Go, Java, PHP...
+        </ExplainerBox>
+
+        <ExplainerBox type="remember">
+          Il server <strong>non sa nulla del browser</strong>. Riceve solo testo (la request),
+          lo elabora, e risponde con altro testo (la response). Non vede l'HTML, non vede i colori,
+          non vede i pulsanti.
+        </ExplainerBox>
       </div>
     </div>
   );

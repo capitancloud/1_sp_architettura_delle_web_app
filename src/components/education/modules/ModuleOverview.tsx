@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Globe, Server, ArrowRight, ArrowLeft } from "lucide-react";
-import { DiagramBox, ConnectionLine, HighlightBox } from "../DiagramElements";
+import { DiagramBox, ConnectionLine, HighlightBox, ExplainerBox, ComparisonBox } from "../DiagramElements";
 import { useState, useEffect } from "react";
 
 export function ModuleOverview() {
@@ -184,6 +184,43 @@ export function ModuleOverview() {
         )}
       </motion.div>
 
+      {/* Explainer Boxes */}
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+        <ExplainerBox type="analogy">
+          Immagina un <strong>ristorante</strong>: il cliente (browser) è seduto al tavolo, 
+          il cameriere porta l'ordine (request) in cucina (server), lo chef prepara il piatto 
+          e il cameriere lo riporta (response) al tavolo.
+        </ExplainerBox>
+
+        <ExplainerBox type="why" title="Perché sono separati?">
+          Il <strong>browser non può accedere direttamente ai dati</strong>. 
+          Se potesse, chiunque potrebbe vedere i dati di tutti gli utenti! 
+          Il server fa da "guardiano" dei dati.
+        </ExplainerBox>
+      </div>
+
+      {/* Comparison Box */}
+      <div className="max-w-4xl mx-auto mt-8">
+        <ComparisonBox
+          leftTitle="🌐 Nel Browser (Client)"
+          rightTitle="🖥️ Sul Server"
+          leftItems={[
+            "Il codice è visibile a tutti",
+            "Gira sul PC dell'utente",
+            "Non può accedere a database",
+            "Ogni utente ha la sua copia"
+          ]}
+          rightItems={[
+            "Il codice è privato",
+            "Gira su una macchina remota",
+            "Accede a database e API",
+            "Condiviso tra tutti gli utenti"
+          ]}
+          leftVariant="client"
+          rightVariant="server"
+        />
+      </div>
+
       {/* Key Concepts */}
       <div className="grid grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
         <motion.div
@@ -224,6 +261,15 @@ export function ModuleOverview() {
             I dati "veri" vivono sul server, non nel browser
           </p>
         </motion.div>
+      </div>
+
+      {/* Final Remember Box */}
+      <div className="max-w-2xl mx-auto mt-8">
+        <ExplainerBox type="remember">
+          Ogni volta che interagisci con un sito web (like su Instagram, messaggio su WhatsApp Web, 
+          acquisto su Amazon), il tuo browser sta inviando <strong>HTTP Request</strong> a un server 
+          che risponde con <strong>HTTP Response</strong>.
+        </ExplainerBox>
       </div>
     </div>
   );

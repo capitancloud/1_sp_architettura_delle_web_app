@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle, AlertCircle, FileJson } from "lucide-react";
-import { DiagramBox, CodeBlock, HighlightBox } from "../DiagramElements";
+import { DiagramBox, CodeBlock, HighlightBox, ExplainerBox } from "../DiagramElements";
 import { useState } from "react";
 
 export function ModuleResponse() {
@@ -255,11 +255,38 @@ console.log(dati.messaggi);
         </div>
       </motion.div>
 
+      {/* Explainer Boxes */}
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+        <ExplainerBox type="analogy">
+          Lo status code è come il <strong>semaforo della risposta</strong>: 
+          verde (2xx) = tutto ok, giallo (3xx/4xx) = qualcosa non va lato client, 
+          rosso (5xx) = problema del server.
+        </ExplainerBox>
+
+        <ExplainerBox type="tip">
+          Quando un sito mostra "404 Not Found" o "500 Internal Server Error",
+          stai vedendo proprio questi <strong>status code HTTP</strong>!
+        </ExplainerBox>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-4">
+        <ExplainerBox type="remember">
+          Il browser <strong>aspetta</strong> la response con <code className="bg-muted px-1 rounded">await fetch()</code>.
+          Finché il server non risponde, il JavaScript è "in pausa" su quella riga.
+        </ExplainerBox>
+
+        <ExplainerBox type="why" title="Perché Content-Type?">
+          Il server deve dire al browser <strong>come interpretare</strong> il body.
+          <code className="bg-muted px-1 rounded ml-1">application/json</code> = è JSON, parsalo.
+          <code className="bg-muted px-1 rounded ml-1">text/html</code> = è HTML, mostralo.
+        </ExplainerBox>
+      </div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto mt-6"
       >
         <HighlightBox variant="success" title="💡 Concetto chiave">
           La response è <strong>solo testo strutturato</strong>, proprio come la request.

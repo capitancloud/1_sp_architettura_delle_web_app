@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Send, FileText } from "lucide-react";
-import { DiagramBox, CodeBlock, HighlightBox } from "../DiagramElements";
+import { DiagramBox, CodeBlock, HighlightBox, ExplainerBox } from "../DiagramElements";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -251,11 +251,39 @@ const request = {
         </div>
       </motion.div>
 
+      {/* Explainer Boxes */}
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+        <ExplainerBox type="analogy">
+          Una HTTP Request è come una <strong>lettera raccomandata</strong>: ha un mittente (browser),
+          un destinatario (server), un oggetto (path), e un contenuto (body). La busta segue un formato preciso.
+        </ExplainerBox>
+
+        <ExplainerBox type="tip">
+          Apri gli <strong>Strumenti sviluppatore</strong> (F12) → tab "Network" per vedere 
+          tutte le HTTP Request che il tuo browser sta inviando in questo momento!
+        </ExplainerBox>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-4">
+        <ExplainerBox type="why" title="Perché si usa JSON?">
+          JSON (JavaScript Object Notation) è un formato <strong>leggibile sia dall'uomo che dalla macchina</strong>.
+          È diventato lo standard perché è semplice da parsare e supportato da tutti i linguaggi.
+        </ExplainerBox>
+
+        <ExplainerBox type="remember">
+          I <strong>metodi HTTP</strong> più comuni: <br/>
+          <code className="bg-muted px-1 rounded">GET</code> = leggi dati, 
+          <code className="bg-muted px-1 rounded ml-1">POST</code> = invia dati, 
+          <code className="bg-muted px-1 rounded ml-1">PUT</code> = aggiorna, 
+          <code className="bg-muted px-1 rounded ml-1">DELETE</code> = elimina
+        </ExplainerBox>
+      </div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto mt-6"
       >
         <HighlightBox variant="warning" title="💡 Concetto chiave">
           Una HTTP Request è <strong>solo testo strutturato</strong>. 

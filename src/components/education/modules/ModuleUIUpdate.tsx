@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { RefreshCw, CheckCircle, Globe, Server, ArrowRight, ArrowLeft } from "lucide-react";
-import { DiagramBox, HighlightBox } from "../DiagramElements";
+import { DiagramBox, HighlightBox, ExplainerBox } from "../DiagramElements";
 import { useState } from "react";
 
 export function ModuleUIUpdate() {
@@ -354,11 +354,33 @@ export function ModuleUIUpdate() {
         </div>
       </motion.div>
 
+      {/* Explainer Boxes */}
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+        <ExplainerBox type="analogy">
+          L'intero ciclo è come <strong>ordinare una pizza online</strong>:
+          scegli dal menù (UI) → l'ordine va alla pizzeria (request) → il pizzaiolo prepara (server) 
+          → la pizza arriva (response) → la mangi (UI aggiornata)!
+        </ExplainerBox>
+
+        <ExplainerBox type="tip">
+          Nella realtà, framework come <strong>React</strong> rendono l'aggiornamento della UI 
+          più efficiente, ma sotto il cofano fanno esattamente le stesse operazioni che hai visto qui.
+        </ExplainerBox>
+      </div>
+
+      <div className="max-w-2xl mx-auto mt-4">
+        <ExplainerBox type="remember">
+          <strong>Full Stack</strong> significa padroneggiare entrambi i mondi: saper costruire 
+          l'interfaccia che l'utente vede (frontend) E la logica che gestisce i dati (backend).
+          Ora sai cosa succede in mezzo!
+        </ExplainerBox>
+      </div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto mt-6"
       >
         <HighlightBox variant="success" title="🚀 Ora sai cosa succede davvero!">
           Non c'è magia. Solo due programmi che parlano tra loro usando testo strutturato (HTTP).
