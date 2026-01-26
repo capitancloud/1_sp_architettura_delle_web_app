@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileCode, Server, Globe, Eye, EyeOff, ChevronLeft, ChevronRight, Check, X } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 export function V3ModuleTypeScript() {
   const [step, setStep] = useState(0);
@@ -101,21 +102,23 @@ export function MessageForm({ onSubmit }: Props) {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-blue-500/30 bg-blue-500/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <FileCode className="w-6 h-6 text-blue-400" />
-            <div>
-              <p className="font-medium text-blue-400">Cosa devi capire</p>
-              <p className="text-sm text-muted-foreground">
-                I tipi TypeScript sono come contratti: definiscono la forma dei dati 
-                e garantiscono che tutti i pezzi dell'app parlino la stessa lingua.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="why" title="Perché usare i tipi?">
+          I tipi sono come <strong>contratti</strong>: definiscono la forma dei dati e garantiscono 
+          che tutti i pezzi dell'app (server e client) parlino la stessa lingua.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Come un modulo di iscrizione">
+          Un <code>interface</code> è come un <strong>modulo da compilare</strong>: specifica quali campi servono 
+          (nome, email...) e di che tipo devono essere. Se sbagli, TypeScript ti avvisa!
+        </ExplainerBox>
+      </div>
+
+      <ExplainerBox type="remember">
+        I tipi vengono controllati <strong>in compile-time</strong>, cioè mentre scrivi il codice. 
+        Gli errori vengono trovati PRIMA che l'utente usi l'app, non durante!
+      </ExplainerBox>
 
       {/* Step Explanation */}
       <Card className="border-border/50">

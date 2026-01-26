@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Globe, MousePointer, Keyboard, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 export function V3ModuleClientComponents() {
   const [inputValue, setInputValue] = useState("");
@@ -77,21 +78,23 @@ export function Form() {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-client/30 bg-client/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <Globe className="w-6 h-6 text-client" />
-            <div>
-              <p className="font-medium text-client">Cosa devi capire</p>
-              <p className="text-sm text-muted-foreground">
-                I Client Components esistono perché alcuni eventi (click, input) 
-                possono avvenire SOLO nel browser. Non sul server.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="why" title="Perché esistono?">
+          Il server non ha mouse, tastiera, né schermo. Gli eventi come <code>onClick</code> e <code>onChange</code> 
+          possono avvenire <strong>solo nel browser</strong>, dove c'è un utente che interagisce.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Come un telecomando">
+          I Client Components sono come il <strong>telecomando della TV</strong>: i pulsanti (eventi) funzionano 
+          solo se li premi tu. La TV (server) non può premere i pulsanti da sola!
+        </ExplainerBox>
+      </div>
+
+      <ExplainerBox type="warning" title="Attenzione!">
+        Aggiungere <code>"use client"</code> a un componente significa che <strong>tutto il suo JavaScript</strong> 
+        verrà inviato al browser. Usalo solo quando serve davvero interattività!
+      </ExplainerBox>
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Step Content */}

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RotateCcw, Folder, Server, Globe, ArrowRight } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 export function V3ModuleMentalMap() {
   const [step, setStep] = useState(0);
@@ -69,20 +70,22 @@ export function V3ModuleMentalMap() {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-purple-500/30 bg-purple-500/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">💡</span>
-            <div>
-              <p className="font-medium text-purple-400">Cosa devi capire</p>
-              <p className="text-sm text-muted-foreground">
-                Non tutto il codice React gira nel browser. Next.js decide cosa eseguire dove.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="why" title="Perché un solo progetto?">
+          Prima di Next.js, dovevi creare due progetti separati: uno per il frontend (React) e uno per il backend (Node.js/Express). 
+          Next.js li unifica, ma <strong>l'esecuzione resta divisa</strong>: alcune cose girano sul server, altre nel browser.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Pensa a un ristorante">
+          Il <strong>progetto Next.js</strong> è come un ristorante. La <strong>cucina</strong> (server) prepara i piatti, 
+          la <strong>sala</strong> (browser) li serve ai clienti. Stesso locale, ruoli diversi!
+        </ExplainerBox>
+      </div>
+
+      <ExplainerBox type="remember">
+        Non tutto il codice React gira nel browser. <strong>Next.js decide cosa eseguire dove</strong> in base a come scrivi i componenti.
+      </ExplainerBox>
 
       {/* Main Visualization */}
       <Card className="border-border/50">

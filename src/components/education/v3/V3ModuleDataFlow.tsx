@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Globe, Server, ArrowRight, Send, RotateCcw, Play } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 type FlowStep = "idle" | "click" | "action" | "update" | "render" | "done";
 
@@ -71,21 +72,23 @@ export function V3ModuleDataFlow() {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-request/30 bg-request/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">💡</span>
-            <div>
-              <p className="font-medium text-request">Cosa devi capire</p>
-              <p className="text-sm text-muted-foreground">
-                Una Server Action è una funzione che gira sul server ma può essere chiamata 
-                dal client. È il modo moderno per far comunicare browser e server in Next.js.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="why" title="Cosa sono le Server Actions?">
+          Una Server Action è una <strong>funzione che gira sul server</strong> ma può essere chiamata 
+          dal client come se fosse locale. È il modo moderno per far comunicare browser e server.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Come ordinare al ristorante">
+          Cliccare "Invia" è come <strong>chiamare il cameriere</strong>. Tu (browser) fai l'ordine, 
+          il cameriere (Server Action) lo porta in cucina (server), e torna con il piatto (UI aggiornata).
+        </ExplainerBox>
+      </div>
+
+      <ExplainerBox type="remember">
+        Il flusso è sempre: <strong>Browser → HTTP → Server → Aggiorna stato → Re-render → Browser</strong>. 
+        La magia di Next.js è rendere questo flusso trasparente con <code>"use server"</code>.
+      </ExplainerBox>
 
       {/* Flow Diagram */}
       <Card className="border-border/50">
