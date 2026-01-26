@@ -7,6 +7,8 @@ import { getVersionById } from "@/config/versions";
 import { V3ModuleIntro } from "@/components/education/v3/V3ModuleIntro";
 import { V3ModuleMentalMap } from "@/components/education/v3/V3ModuleMentalMap";
 import { V3ModuleInterface } from "@/components/education/v3/V3ModuleInterface";
+import { V3ModuleReact } from "@/components/education/v3/V3ModuleReact";
+import { V3ModuleTailwind } from "@/components/education/v3/V3ModuleTailwind";
 import { V3ModuleClientComponents } from "@/components/education/v3/V3ModuleClientComponents";
 import { V3ModuleServerComponents } from "@/components/education/v3/V3ModuleServerComponents";
 import { V3ModuleDataFlow } from "@/components/education/v3/V3ModuleDataFlow";
@@ -18,6 +20,8 @@ const moduleComponents = [
   V3ModuleIntro,
   V3ModuleMentalMap,
   V3ModuleInterface,
+  V3ModuleReact,
+  V3ModuleTailwind,
   V3ModuleClientComponents,
   V3ModuleServerComponents,
   V3ModuleDataFlow,
