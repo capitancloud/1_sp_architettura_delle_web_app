@@ -66,6 +66,7 @@ export const versions: VersionConfig[] = [
     icon: "⚛️",
     color: "request",
     modules: [
+      { id: "intro", title: "Introduzione", subtitle: "Obiettivi e percorso", icon: "🎯" },
       { id: "mental-map", title: "Mappa Mentale", subtitle: "Un progetto, due ambienti", icon: "🗺️" },
       { id: "interface", title: "Interfaccia Base", subtitle: "Cosa vede l'utente", icon: "🖥️" },
       { id: "client-components", title: "Client Components", subtitle: "Interazione nel browser", icon: "🌐" },

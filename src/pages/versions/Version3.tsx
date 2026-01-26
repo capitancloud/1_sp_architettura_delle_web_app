@@ -4,6 +4,7 @@ import { VersionLayout } from "@/layouts/VersionLayout";
 import { getVersionById } from "@/config/versions";
 
 // Import dei moduli V3
+import { V3ModuleIntro } from "@/components/education/v3/V3ModuleIntro";
 import { V3ModuleMentalMap } from "@/components/education/v3/V3ModuleMentalMap";
 import { V3ModuleInterface } from "@/components/education/v3/V3ModuleInterface";
 import { V3ModuleClientComponents } from "@/components/education/v3/V3ModuleClientComponents";
@@ -13,6 +14,7 @@ import { V3ModuleSSR } from "@/components/education/v3/V3ModuleSSR";
 import { V3ModuleTypeScript } from "@/components/education/v3/V3ModuleTypeScript";
 
 const moduleComponents = [
+  V3ModuleIntro,
   V3ModuleMentalMap,
   V3ModuleInterface,
   V3ModuleClientComponents,
