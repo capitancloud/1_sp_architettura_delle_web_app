@@ -69,6 +69,8 @@ export const versions: VersionConfig[] = [
       { id: "intro", title: "Introduzione", subtitle: "Obiettivi e percorso", icon: "🎯" },
       { id: "mental-map", title: "Mappa Mentale", subtitle: "Un progetto, due ambienti", icon: "🗺️" },
       { id: "interface", title: "Interfaccia Base", subtitle: "Cosa vede l'utente", icon: "🖥️" },
+      { id: "react", title: "React", subtitle: "Componenti e UI", icon: "⚛️" },
+      { id: "tailwind", title: "Tailwind CSS", subtitle: "Utility-first styling", icon: "🎨" },
       { id: "client-components", title: "Client Components", subtitle: "Interazione nel browser", icon: "🌐" },
       { id: "server-components", title: "Server Components", subtitle: "Rendering sul server", icon: "🖥️" },
       { id: "data-flow", title: "Flusso Dati", subtitle: "Server Actions", icon: "🔄" },
