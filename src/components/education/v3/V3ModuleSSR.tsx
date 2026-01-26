@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,13 +17,15 @@ export function V3ModuleSSR({ onNext }: V3ModuleSSRProps) {
   const [step, setStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const phases = [
-    { id: "request", label: "Browser richiede pagina", icon: "🌐", side: "client" },
-    { id: "server-render", label: "Server genera HTML", icon: "🖥️", side: "server" },
-    { id: "html-sent", label: "HTML inviato", icon: "📄", side: "transfer" },
-    { id: "hydration", label: "Hydration (JS caricato)", icon: "💧", side: "client" },
-    { id: "interactive", label: "Pagina interattiva", icon: "✨", side: "client" },
-  ];
+  const phases = useMemo(() => [
+    { id: "request" as const, label: "Browser richiede pagina", icon: "🌐", side: "client" },
+    { id: "server-render" as const, label: "Server genera HTML", icon: "🖥️", side: "server" },
+    { id: "html-sent" as const, label: "HTML inviato", icon: "📄", side: "transfer" },
+    { id: "hydration" as const, label: "Hydration (JS caricato)", icon: "💧", side: "client" },
+    { id: "interactive" as const, label: "Pagina interattiva", icon: "✨", side: "client" },
+  ], []);
+
+  const phaseOrder: SSRPhase[] = useMemo(() => ["request", "server-render", "html-sent", "hydration", "interactive"], []);
 
   const explanations = [
     {
@@ -43,9 +45,23 @@ export function V3ModuleSSR({ onNext }: V3ModuleSSRProps) {
     },
   ];
 
+  const getPhaseIndex = () => phases.findIndex(p => p.id === phase);
+
+  const goToPhaseIndex = (idx: number) => {
+    if (isAnimating) return;
+    if (idx < 0) {
+      setPhase("idle");
+      return;
+    }
+    if (idx >= phases.length) return;
+    setPhase(phases[idx].id);
+  };
+
+  const goPrevPhase = () => goToPhaseIndex(getPhaseIndex() - 1);
+  const goNextPhase = () => goToPhaseIndex(getPhaseIndex() + 1);
+
   const runAnimation = () => {
     setIsAnimating(true);
-    const phaseOrder: SSRPhase[] = ["request", "server-render", "html-sent", "hydration", "interactive"];
     let i = 0;
 
     const interval = setInterval(() => {
@@ -57,6 +73,11 @@ export function V3ModuleSSR({ onNext }: V3ModuleSSRProps) {
         setTimeout(() => setIsAnimating(false), 1000);
       }
     }, 1500);
+  };
+
+  const reset = () => {
+    setPhase("idle");
+    setIsAnimating(false);
   };
 
   const currentExplanation = explanations[step];
@@ -100,10 +121,28 @@ export function V3ModuleSSR({ onNext }: V3ModuleSSRProps) {
           <CardTitle className="text-lg flex items-center justify-between">
             <span>Ciclo SSR</span>
             <div className="flex gap-2">
+              <div className="hidden sm:flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={goPrevPhase}
+                  disabled={isAnimating || getPhaseIndex() <= 0}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={goNextPhase}
+                  disabled={isAnimating || getPhaseIndex() >= phases.length - 1}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
               <Button 
                 variant="outline" 
                 size="sm" 
-                onClick={() => { setPhase("idle"); setIsAnimating(false); }}
+                onClick={reset}
               >
                 <RotateCcw className="w-4 h-4 mr-1" />
                 Reset
@@ -121,47 +160,88 @@ export function V3ModuleSSR({ onNext }: V3ModuleSSRProps) {
         </CardHeader>
         <CardContent>
           {/* Phase Indicators */}
-          <div className="flex items-center justify-between mb-8 overflow-x-auto pb-2">
-            {phases.map((p, i) => {
-              const currentIndex = phases.findIndex(ph => ph.id === phase);
-              const isActive = p.id === phase;
-              const isPast = currentIndex > i;
+          <div className="mb-6">
+            <div className="flex items-center justify-between overflow-x-auto overflow-y-visible py-3">
+              {phases.map((p, i) => {
+                const currentIndex = getPhaseIndex();
+                const isActive = p.id === phase;
+                const isPast = currentIndex > i;
 
-              return (
-                <div key={p.id} className="flex items-center">
-                  <motion.div
-                    className={`
-                      flex flex-col items-center min-w-[90px]
-                      ${isPast || isActive ? "opacity-100" : "opacity-40"}
-                    `}
-                    animate={{ scale: isActive ? 1.1 : 1 }}
-                  >
-                    <div className={`
-                      w-12 h-12 rounded-full flex items-center justify-center text-xl
-                      border-2 transition-all
-                      ${isActive
-                        ? p.side === "server" 
-                          ? "border-server bg-server/20" 
-                          : p.side === "client"
-                            ? "border-client bg-client/20"
-                            : "border-request bg-request/20"
-                        : isPast
-                          ? "border-accent bg-accent/20"
-                          : "border-border bg-muted/20"
-                      }
-                    `}>
-                      {p.icon}
-                    </div>
-                    <span className="text-xs mt-2 text-center font-medium">{p.label}</span>
-                  </motion.div>
-                  {i < phases.length - 1 && (
-                    <ArrowRight className={`w-5 h-5 mx-1 ${
-                      currentIndex > i ? "text-accent" : "text-muted-foreground/30"
-                    }`} />
-                  )}
-                </div>
-              );
-            })}
+                return (
+                  <div key={p.id} className="flex items-center">
+                    <motion.button
+                      type="button"
+                      disabled={isAnimating}
+                      onClick={() => goToPhaseIndex(i)}
+                      className={`
+                        flex flex-col items-center min-w-[100px] px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 rounded-md
+                        ${isPast || isActive ? "opacity-100" : "opacity-40"}
+                        ${isAnimating ? "cursor-not-allowed" : "cursor-pointer"}
+                      `}
+                      animate={{ scale: isActive ? 1.05 : 1 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                    >
+                      <div className={`
+                        w-12 h-12 rounded-full flex items-center justify-center text-xl
+                        border-2 transition-all
+                        ${isActive
+                          ? p.side === "server" 
+                            ? "border-server bg-server/20" 
+                            : p.side === "client"
+                              ? "border-client bg-client/20"
+                              : "border-request bg-request/20"
+                          : isPast
+                            ? "border-accent bg-accent/20"
+                            : "border-border bg-muted/20"
+                        }
+                      `}>
+                        {p.icon}
+                      </div>
+                      <span className="text-xs mt-2 text-center font-medium leading-tight">{p.label}</span>
+                    </motion.button>
+                    {i < phases.length - 1 && (
+                      <ArrowRight className={`w-5 h-5 mx-1 flex-shrink-0 ${
+                        currentIndex > i ? "text-accent" : "text-muted-foreground/30"
+                      }`} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Manual step dots */}
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={goPrevPhase}
+                disabled={isAnimating || getPhaseIndex() <= 0}
+                className="sm:hidden"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              {phases.map((p, i) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => goToPhaseIndex(i)}
+                  disabled={isAnimating}
+                  className={`h-2 rounded-full transition-all ${
+                    i === getPhaseIndex() ? "w-6 bg-purple-500" : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                  } ${isAnimating ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+                  aria-label={`Vai alla fase ${i + 1}: ${p.label}`}
+                />
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={goNextPhase}
+                disabled={isAnimating || getPhaseIndex() >= phases.length - 1}
+                className="sm:hidden"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
 
           {/* Visualization */}
