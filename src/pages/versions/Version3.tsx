@@ -1,21 +1,45 @@
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { VersionLayout } from "@/layouts/VersionLayout";
 import { getVersionById } from "@/config/versions";
 
+// Import dei moduli V3
+import { V3ModuleMentalMap } from "@/components/education/v3/V3ModuleMentalMap";
+import { V3ModuleInterface } from "@/components/education/v3/V3ModuleInterface";
+import { V3ModuleClientComponents } from "@/components/education/v3/V3ModuleClientComponents";
+import { V3ModuleServerComponents } from "@/components/education/v3/V3ModuleServerComponents";
+import { V3ModuleDataFlow } from "@/components/education/v3/V3ModuleDataFlow";
+import { V3ModuleSSR } from "@/components/education/v3/V3ModuleSSR";
+import { V3ModuleTypeScript } from "@/components/education/v3/V3ModuleTypeScript";
+
+const moduleComponents = [
+  V3ModuleMentalMap,
+  V3ModuleInterface,
+  V3ModuleClientComponents,
+  V3ModuleServerComponents,
+  V3ModuleDataFlow,
+  V3ModuleSSR,
+  V3ModuleTypeScript,
+];
+
 export default function Version3() {
+  const [currentModule, setCurrentModule] = useState(0);
+  
   const version = getVersionById("v3");
   
-  if (!version?.isAvailable) {
+  if (!version || !version.isAvailable) {
     return <Navigate to="/" replace />;
   }
 
+  const CurrentModuleComponent = moduleComponents[currentModule];
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center">
-        <span className="text-6xl mb-4 block">{version.icon}</span>
-        <h1 className="text-2xl font-bold mb-2">{version.title}</h1>
-        <p className="text-muted-foreground">{version.subtitle}</p>
-        <p className="text-sm text-muted-foreground mt-4">In costruzione...</p>
-      </div>
-    </div>
+    <VersionLayout
+      version={version}
+      currentModuleIndex={currentModule}
+      onModuleChange={setCurrentModule}
+    >
+      <CurrentModuleComponent />
+    </VersionLayout>
   );
 }
