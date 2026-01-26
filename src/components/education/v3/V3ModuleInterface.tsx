@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Send, Server, Globe, Eye, ChevronLeft, ChevronRight, RotateCcw, Play } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 export function V3ModuleInterface() {
   const [inputValue, setInputValue] = useState("");
@@ -103,20 +104,18 @@ export function V3ModuleInterface() {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-purple-500/30 bg-purple-500/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">💡</span>
-            <div>
-              <p className="font-medium text-purple-400">Cosa stai vedendo</p>
-              <p className="text-sm text-muted-foreground">
-                Un'interfaccia semplice: input, bottone, lista. Interagisci e osserva dove gira ogni pezzo.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="tip" title="Cosa stai vedendo">
+          Un'interfaccia semplice: input, bottone, lista. Interagisci e osserva dove gira ogni pezzo. 
+          La <strong>Legenda Runtime</strong> ti mostra in tempo reale cosa sta succedendo.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Come un modulo radio">
+          L'input è come il <strong>microfono</strong> (cattura la tua voce nel browser), 
+          la lista è come l'<strong>altoparlante</strong> (riceve dati dal server e li mostra).
+        </ExplainerBox>
+      </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Runtime Legend */}

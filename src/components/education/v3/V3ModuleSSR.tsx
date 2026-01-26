@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Server, Globe, FileCode, ArrowRight, Play, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 type SSRPhase = "idle" | "request" | "server-render" | "html-sent" | "hydration" | "interactive";
 
@@ -71,21 +72,23 @@ export function V3ModuleSSR() {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-purple-500/30 bg-purple-500/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">💡</span>
-            <div>
-              <p className="font-medium text-purple-400">Cosa devi capire</p>
-              <p className="text-sm text-muted-foreground">
-                SSR significa che la pagina "nasce" sul server già con contenuto HTML. 
-                Il browser riceve UI pronta e poi aggiunge interattività dove serve.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="why" title="Perché SSR esiste?">
+          Con le SPA tradizionali (React classico), il browser riceve una <strong>pagina vuota</strong> e poi la riempie con JavaScript. 
+          Con SSR, il browser riceve <strong>HTML già pronto</strong> → l'utente vede subito il contenuto.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Come un libro vs. un puzzle">
+          <strong>SPA</strong> = ricevi una scatola di pezzi (JS) e devi costruire il puzzle.<br/>
+          <strong>SSR</strong> = ricevi il libro già stampato, pronto da leggere!
+        </ExplainerBox>
+      </div>
+
+      <ExplainerBox type="tip" title="Hydration: il tocco finale">
+        Dopo che il browser riceve l'HTML, <strong>React "idrata" la pagina</strong>: collega gli event handler 
+        e rende interattivi i Client Components. L'utente vede subito il contenuto, poi arriva l'interattività.
+      </ExplainerBox>
 
       {/* SSR Animation */}
       <Card className="border-border/50">

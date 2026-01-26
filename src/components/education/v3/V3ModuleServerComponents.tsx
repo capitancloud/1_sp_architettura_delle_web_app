@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Server, Database, Shield, ChevronLeft, ChevronRight, RotateCcw, Plus } from "lucide-react";
+import { ExplainerBox } from "@/components/education/DiagramElements";
 
 export function V3ModuleServerComponents() {
   const [step, setStep] = useState(0);
@@ -76,21 +77,23 @@ export async function MessageList() {
         </p>
       </div>
 
-      {/* Explainer Box */}
-      <Card className="border-server/30 bg-server/5">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <Server className="w-6 h-6 text-server" />
-            <div>
-              <p className="font-medium text-server">Cosa devi capire</p>
-              <p className="text-sm text-muted-foreground">
-                I Server Components renderizzano sul server. Il loro JavaScript 
-                NON viene mai inviato al browser. Questo li rende più sicuri e leggeri.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Explainer Boxes */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <ExplainerBox type="why" title="Perché sono diversi?">
+          I Server Components girano <strong>solo sul server</strong>. Il browser riceve solo l'HTML finale, 
+          non il codice JavaScript che lo ha generato. Questo significa: meno peso, più sicurezza.
+        </ExplainerBox>
+        
+        <ExplainerBox type="analogy" title="Come una cucina di ristorante">
+          Il Server Component è come lo <strong>chef in cucina</strong>: prepara il piatto (HTML) 
+          ma il cliente (browser) vede solo il risultato finale, non la ricetta segreta!
+        </ExplainerBox>
+      </div>
+
+      <ExplainerBox type="tip" title="Il default è Server">
+        In Next.js App Router, <strong>tutti i componenti sono Server Components di default</strong>. 
+        Devi aggiungere <code>"use client"</code> solo se hai bisogno di interattività.
+      </ExplainerBox>
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Step Content */}
