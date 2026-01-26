@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Server, HardDrive, Code, Cpu } from "lucide-react";
+import { Server, HardDrive, Code, Cpu, ChevronLeft, ChevronRight, Play, RotateCcw } from "lucide-react";
 import { DiagramBox, CodeBlock, HighlightBox, MemoryBlock, ExplainerBox } from "../DiagramElements";
 import { useState, useEffect } from "react";
 
@@ -8,9 +8,14 @@ export function ModuleServer() {
   const [messages, setMessages] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+
+  const totalSteps = 5;
+
   const simulateServerProcess = () => {
     setStep(0);
     setIsProcessing(true);
+    setIsAutoPlaying(true);
     
     const steps = [1, 2, 3, 4, 5];
     steps.forEach((s, i) => {
@@ -21,10 +26,25 @@ export function ModuleServer() {
         }
         if (s === 5) {
           setIsProcessing(false);
+          setIsAutoPlaying(false);
         }
-      }, (i + 1) * 2500); // Rallentato da 1200ms a 2500ms per step
+      }, (i + 1) * 2500);
     });
   };
+
+  const goToStep = (newStep: number) => {
+    if (isAutoPlaying) return;
+    if (newStep >= 0 && newStep <= totalSteps) {
+      // Se andiamo allo step 4 e non c'eravamo già, aggiungiamo un messaggio
+      if (newStep === 4 && step < 4) {
+        setMessages(prev => [...prev, "Nuovo messaggio"]);
+      }
+      setStep(newStep);
+    }
+  };
+
+  const nextStep = () => goToStep(step + 1);
+  const prevStep = () => goToStep(step - 1);
 
   const serverCode = `// server.js - Node.js PURO (senza Express!)
 const http = require('http');
@@ -148,14 +168,66 @@ server.listen(3000, () => {
             </motion.div>
           </div>
 
-          <div className="mt-6 flex justify-center">
-            <button
-              onClick={simulateServerProcess}
-              disabled={isProcessing}
-              className="px-6 py-3 rounded-lg bg-server text-secondary-foreground font-medium disabled:opacity-50 transition-all hover:bg-server/80"
-            >
-              {isProcessing ? 'Elaborazione in corso...' : '▶ Simula arrivo Request'}
-            </button>
+          {/* Control Buttons */}
+          <div className="mt-6 flex flex-col items-center gap-4">
+            {/* Step indicators */}
+            <div className="flex items-center gap-2">
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <button
+                  key={i}
+                  onClick={() => goToStep(i)}
+                  disabled={isAutoPlaying}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    step === i 
+                      ? 'w-8 bg-server' 
+                      : step > i 
+                        ? 'bg-server/50' 
+                        : 'bg-muted hover:bg-muted-foreground'
+                  } ${isAutoPlaying ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                />
+              ))}
+            </div>
+
+            {/* Navigation buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={prevStep}
+                disabled={step === 0 || isAutoPlaying}
+                className="p-2 rounded-lg bg-muted text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted/80 transition-all"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={simulateServerProcess}
+                disabled={isProcessing}
+                className="px-5 py-2 rounded-lg bg-server text-secondary-foreground font-medium disabled:opacity-50 transition-all hover:bg-server/80 flex items-center gap-2"
+              >
+                <Play className="w-4 h-4" />
+                {isProcessing ? 'In corso...' : 'Auto'}
+              </button>
+
+              <button
+                onClick={nextStep}
+                disabled={step === totalSteps || isAutoPlaying}
+                className="p-2 rounded-lg bg-muted text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted/80 transition-all"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={() => { setStep(0); setMessages([]); }}
+                disabled={isAutoPlaying}
+                className="p-2 rounded-lg bg-muted text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-muted/80 transition-all ml-2"
+                title="Ricomincia"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              Usa le frecce per navigare manualmente o premi "Auto" per la simulazione automatica
+            </p>
           </div>
         </DiagramBox>
       </div>
