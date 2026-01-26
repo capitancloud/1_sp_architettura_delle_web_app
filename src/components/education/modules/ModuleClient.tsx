@@ -1,12 +1,30 @@
-import { motion } from "framer-motion";
-import { Globe, MousePointer, Code, Eye } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Globe, MousePointer, Code, Eye, Sparkles } from "lucide-react";
 import { DiagramBox, CodeBlock, HighlightBox } from "../DiagramElements";
 import { useState } from "react";
 
 export function ModuleClient() {
   const [activeTab, setActiveTab] = useState<'html' | 'js'>('html');
   const [highlightedElement, setHighlightedElement] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [showClickEffect, setShowClickEffect] = useState(false);
+  const [clickStep, setClickStep] = useState(0);
 
+  const handleSendClick = () => {
+    if (!inputValue.trim()) {
+      setInputValue("Ciao mondo!");
+    }
+    setShowClickEffect(true);
+    setClickStep(1);
+    setActiveTab('js');
+    
+    setTimeout(() => setClickStep(2), 800);
+    setTimeout(() => setClickStep(3), 1600);
+    setTimeout(() => {
+      setClickStep(0);
+      setShowClickEffect(false);
+    }, 4000);
+  };
   const htmlCode = `<!DOCTYPE html>
 <html>
 <head>
@@ -105,6 +123,8 @@ btn.addEventListener('click', async () => {
                 <div className="flex gap-2 mb-6">
                   <input
                     type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Scrivi un messaggio..."
                     className={`flex-1 px-3 py-2 rounded border bg-card text-sm transition-all ${
                       highlightedElement === 'input' ? 'ring-2 ring-client' : 'border-border'
@@ -112,16 +132,47 @@ btn.addEventListener('click', async () => {
                     onMouseEnter={() => setHighlightedElement('input')}
                     onMouseLeave={() => setHighlightedElement(null)}
                   />
-                  <button
+                  <motion.button
+                    onClick={handleSendClick}
+                    disabled={showClickEffect}
+                    whileTap={{ scale: 0.95 }}
                     className={`px-4 py-2 rounded bg-client text-primary-foreground text-sm font-medium transition-all ${
                       highlightedElement === 'button' ? 'ring-2 ring-highlight ring-offset-2 ring-offset-background' : ''
-                    }`}
+                    } ${showClickEffect ? 'animate-pulse' : ''}`}
                     onMouseEnter={() => setHighlightedElement('button')}
                     onMouseLeave={() => setHighlightedElement(null)}
                   >
                     Invia
-                  </button>
+                  </motion.button>
                 </div>
+
+                {/* Click Effect Explanation */}
+                <AnimatePresence>
+                  {showClickEffect && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="mb-4 p-3 rounded-lg bg-client/20 border border-client"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles className="w-4 h-4 text-client" />
+                        <span className="text-sm font-semibold text-client">Cosa sta succedendo:</span>
+                      </div>
+                      <ol className="text-xs space-y-1">
+                        <li className={`transition-all ${clickStep >= 1 ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {clickStep >= 1 ? '✓' : '○'} 1. Evento "click" catturato dal JavaScript
+                        </li>
+                        <li className={`transition-all ${clickStep >= 2 ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {clickStep >= 2 ? '✓' : '○'} 2. Lettura valore input: "{inputValue || 'Ciao mondo!'}"
+                        </li>
+                        <li className={`transition-all ${clickStep >= 3 ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {clickStep >= 3 ? '✓' : '○'} 3. Preparazione HTTP Request... → vai al modulo successivo!
+                        </li>
+                      </ol>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <ul 
                   className={`space-y-2 p-3 rounded border min-h-[100px] transition-all ${
