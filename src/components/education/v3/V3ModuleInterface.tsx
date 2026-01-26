@@ -97,7 +97,7 @@ export function V3ModuleInterface({ onNext }: V3ModuleInterfaceProps) {
       } else {
         setStep(currentStepIndex);
       }
-    }, 2500);
+    }, 4000);
   };
 
   const resetDemo = () => {
