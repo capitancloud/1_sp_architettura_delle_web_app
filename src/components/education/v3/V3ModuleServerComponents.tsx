@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Server, Database, Shield, ChevronLeft, ChevronRight, RotateCcw, Plus } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleServerComponentsProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleServerComponents() {
+export function V3ModuleServerComponents({ onNext }: V3ModuleServerComponentsProps) {
   const [step, setStep] = useState(0);
   const [serverMessages, setServerMessages] = useState<string[]>(["Primo messaggio", "Secondo messaggio"]);
   const [isRendering, setIsRendering] = useState(false);

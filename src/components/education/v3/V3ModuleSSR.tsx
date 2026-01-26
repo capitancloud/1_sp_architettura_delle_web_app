@@ -8,7 +8,11 @@ import { ExplainerBox } from "@/components/education/DiagramElements";
 
 type SSRPhase = "idle" | "request" | "server-render" | "html-sent" | "hydration" | "interactive";
 
-export function V3ModuleSSR() {
+interface V3ModuleSSRProps {
+  onNext?: () => void;
+}
+
+export function V3ModuleSSR({ onNext }: V3ModuleSSRProps) {
   const [phase, setPhase] = useState<SSRPhase>("idle");
   const [step, setStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);

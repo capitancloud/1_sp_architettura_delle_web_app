@@ -37,13 +37,19 @@ export default function Version3() {
 
   const CurrentModuleComponent = moduleComponents[currentModule];
 
+  const goToNextModule = () => {
+    if (currentModule < moduleComponents.length - 1) {
+      setCurrentModule(currentModule + 1);
+    }
+  };
+
   return (
     <VersionLayout
       version={version}
       currentModuleIndex={currentModule}
       onModuleChange={setCurrentModule}
     >
-      <CurrentModuleComponent />
+      <CurrentModuleComponent onNext={goToNextModule} />
     </VersionLayout>
   );
 }

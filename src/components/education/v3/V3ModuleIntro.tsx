@@ -15,8 +15,11 @@ import {
   Lightbulb
 } from "lucide-react";
 import { ExplainerBox } from "@/components/education/DiagramElements";
+interface V3ModuleIntroProps {
+  onNext?: () => void;
+}
 
-export function V3ModuleIntro() {
+export function V3ModuleIntro({ onNext }: V3ModuleIntroProps) {
   const [expandedSection, setExpandedSection] = useState<string | null>("starting");
 
   const learningPath = [
@@ -316,7 +319,11 @@ export function V3ModuleIntro() {
         <p className="text-muted-foreground mb-4">
           Pronto a capire come funziona Next.js? Vai al prossimo modulo!
         </p>
-        <Button size="lg" className="gap-2 bg-purple-500 hover:bg-purple-600">
+        <Button 
+          size="lg" 
+          className="gap-2 bg-purple-500 hover:bg-purple-600"
+          onClick={onNext}
+        >
           Inizia il Percorso
           <ChevronRight className="w-5 h-5" />
         </Button>

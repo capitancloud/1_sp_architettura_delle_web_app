@@ -9,7 +9,11 @@ import { ExplainerBox } from "@/components/education/DiagramElements";
 
 type FlowStep = "idle" | "click" | "action" | "update" | "render" | "done";
 
-export function V3ModuleDataFlow() {
+interface V3ModuleDataFlowProps {
+  onNext?: () => void;
+}
+
+export function V3ModuleDataFlow({ onNext }: V3ModuleDataFlowProps) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<string[]>(["Messaggio esistente"]);
   const [flowStep, setFlowStep] = useState<FlowStep>("idle");
