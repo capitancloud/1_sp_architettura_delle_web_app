@@ -102,7 +102,7 @@ function VersionCard({ version, locked = false }: VersionCardProps) {
   return (
     <div
       className={`
-        relative p-6 rounded-2xl border-2 transition-all duration-300
+        relative p-6 rounded-2xl border-2 transition-all duration-300 h-full flex flex-col
         ${locked 
           ? 'border-border bg-card opacity-60 cursor-not-allowed' 
           : colorClasses[version.color] + ' cursor-pointer group-hover:scale-[1.02]'
@@ -120,7 +120,7 @@ function VersionCard({ version, locked = false }: VersionCardProps) {
 
       {/* Header */}
       <div className="flex items-start gap-4 mb-4">
-        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl ${
+        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0 ${
           locked ? 'bg-muted' : iconColorClasses[version.color]
         }`}>
           {version.icon}
@@ -134,40 +134,42 @@ function VersionCard({ version, locked = false }: VersionCardProps) {
       </div>
 
       {/* Description */}
-      <p className="text-sm text-muted-foreground mb-4">
+      <p className="text-sm text-muted-foreground mb-4 flex-grow">
         {version.description}
       </p>
 
       {/* Modules Preview */}
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4 min-h-[60px]">
         {version.modules.slice(0, 4).map((module) => (
           <span
             key={module.id}
-            className="px-2 py-1 rounded-md bg-muted text-xs text-muted-foreground"
+            className="px-2 py-1 rounded-md bg-muted text-xs text-muted-foreground h-fit"
           >
             {module.icon} {module.title}
           </span>
         ))}
         {version.modules.length > 4 && (
-          <span className="px-2 py-1 rounded-md bg-muted text-xs text-muted-foreground">
+          <span className="px-2 py-1 rounded-md bg-muted text-xs text-muted-foreground h-fit">
             +{version.modules.length - 4} altri
           </span>
         )}
       </div>
 
       {/* CTA */}
-      {!locked && (
-        <div className="flex items-center gap-2 text-sm font-medium text-foreground group-hover:gap-3 transition-all">
-          <span>Inizia</span>
-          <ArrowRight className="w-4 h-4" />
-        </div>
-      )}
+      <div className="mt-auto">
+        {!locked && (
+          <div className="flex items-center gap-2 text-sm font-medium text-foreground group-hover:gap-3 transition-all">
+            <span>Inizia</span>
+            <ArrowRight className="w-4 h-4" />
+          </div>
+        )}
 
-      {locked && (
-        <div className="text-sm text-muted-foreground">
-          Prossimamente disponibile
-        </div>
-      )}
+        {locked && (
+          <div className="text-sm text-muted-foreground">
+            Prossimamente disponibile
+          </div>
+        )}
+      </div>
     </div>
   );
 }
