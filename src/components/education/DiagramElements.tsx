@@ -147,6 +147,150 @@ export function HighlightBox({ children, title, variant = 'info' }: { children: 
   );
 }
 
+// Nuovi box esplicativi per migliorare l'apprendimento
+
+interface ExplainerBoxProps {
+  children: ReactNode;
+  title?: string;
+  type: 'analogy' | 'why' | 'remember' | 'tip' | 'warning';
+}
+
+export function ExplainerBox({ children, title, type }: ExplainerBoxProps) {
+  const configs = {
+    analogy: {
+      icon: '🎭',
+      label: 'Analogia',
+      colors: 'border-purple-500/50 bg-purple-500/10',
+      titleColor: 'text-purple-400',
+    },
+    why: {
+      icon: '🤔',
+      label: 'Perché?',
+      colors: 'border-blue-500/50 bg-blue-500/10',
+      titleColor: 'text-blue-400',
+    },
+    remember: {
+      icon: '📌',
+      label: 'Ricorda',
+      colors: 'border-amber-500/50 bg-amber-500/10',
+      titleColor: 'text-amber-400',
+    },
+    tip: {
+      icon: '💡',
+      label: 'Suggerimento',
+      colors: 'border-emerald-500/50 bg-emerald-500/10',
+      titleColor: 'text-emerald-400',
+    },
+    warning: {
+      icon: '⚠️',
+      label: 'Attenzione',
+      colors: 'border-red-500/50 bg-red-500/10',
+      titleColor: 'text-red-400',
+    },
+  };
+
+  const config = configs[type];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`p-4 rounded-xl border-2 ${config.colors}`}
+    >
+      <div className={`flex items-center gap-2 mb-2 ${config.titleColor}`}>
+        <span className="text-lg">{config.icon}</span>
+        <span className="font-semibold text-sm uppercase tracking-wide">
+          {title || config.label}
+        </span>
+      </div>
+      <div className="text-sm text-foreground leading-relaxed">{children}</div>
+    </motion.div>
+  );
+}
+
+interface FlowStepProps {
+  number: number;
+  title: string;
+  description: string;
+  isActive?: boolean;
+  variant?: 'client' | 'server' | 'request' | 'response';
+}
+
+export function FlowStep({ number, title, description, isActive = false, variant = 'client' }: FlowStepProps) {
+  const variantColors = {
+    client: 'border-client bg-client/10 text-client',
+    server: 'border-server bg-server/10 text-server',
+    request: 'border-request bg-request/10 text-request',
+    response: 'border-response bg-response/10 text-response',
+  };
+
+  return (
+    <motion.div
+      className={`relative p-4 rounded-lg border-2 transition-all ${
+        isActive ? variantColors[variant] : 'border-border bg-card'
+      }`}
+      animate={{ scale: isActive ? 1.02 : 1 }}
+    >
+      <div className={`absolute -left-3 -top-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+        isActive ? variantColors[variant].split(' ')[0].replace('border-', 'bg-') + ' text-background' : 'bg-muted text-muted-foreground'
+      }`}>
+        {number}
+      </div>
+      <h4 className="font-semibold mb-1 ml-4">{title}</h4>
+      <p className="text-sm text-muted-foreground ml-4">{description}</p>
+    </motion.div>
+  );
+}
+
+interface ComparisonBoxProps {
+  leftTitle: string;
+  rightTitle: string;
+  leftItems: string[];
+  rightItems: string[];
+  leftVariant?: 'client' | 'server';
+  rightVariant?: 'client' | 'server';
+}
+
+export function ComparisonBox({ 
+  leftTitle, 
+  rightTitle, 
+  leftItems, 
+  rightItems,
+  leftVariant = 'client',
+  rightVariant = 'server'
+}: ComparisonBoxProps) {
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <div className={`p-4 rounded-lg border-2 ${leftVariant === 'client' ? 'border-client bg-client/5' : 'border-server bg-server/5'}`}>
+        <h4 className={`font-semibold mb-3 ${leftVariant === 'client' ? 'text-client' : 'text-server'}`}>
+          {leftTitle}
+        </h4>
+        <ul className="space-y-2">
+          {leftItems.map((item, i) => (
+            <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+              <span className={leftVariant === 'client' ? 'text-client' : 'text-server'}>•</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className={`p-4 rounded-lg border-2 ${rightVariant === 'client' ? 'border-client bg-client/5' : 'border-server bg-server/5'}`}>
+        <h4 className={`font-semibold mb-3 ${rightVariant === 'client' ? 'text-client' : 'text-server'}`}>
+          {rightTitle}
+        </h4>
+        <ul className="space-y-2">
+          {rightItems.map((item, i) => (
+            <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+              <span className={rightVariant === 'client' ? 'text-client' : 'text-server'}>•</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 export function MemoryBlock({ data, label = "MEMORIA RAM" }: { data: string[]; label?: string }) {
   return (
     <div className="rounded-lg border border-server bg-server/5 p-4">

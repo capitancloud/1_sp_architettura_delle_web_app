@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, MousePointer, Code, Eye, Sparkles } from "lucide-react";
-import { DiagramBox, CodeBlock, HighlightBox } from "../DiagramElements";
+import { DiagramBox, CodeBlock, HighlightBox, ExplainerBox } from "../DiagramElements";
 import { useState } from "react";
 
 export function ModuleClient() {
@@ -295,11 +295,32 @@ btn.addEventListener('click', async () => {
         </motion.div>
       </div>
 
+      {/* Explainer Boxes */}
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+        <ExplainerBox type="analogy">
+          Il browser è come un <strong>televisore</strong>: può mostrare i contenuti che riceve,
+          ma non può andare in studio a modificare cosa trasmettono. Può solo "chiedere" cosa vedere.
+        </ExplainerBox>
+
+        <ExplainerBox type="tip">
+          Quando apri "Ispeziona elemento" (F12) nel browser, stai guardando il codice frontend.
+          Puoi modificarlo localmente, ma le modifiche <strong>non cambiano il server</strong>!
+        </ExplainerBox>
+      </div>
+
+      <div className="max-w-2xl mx-auto mt-6">
+        <ExplainerBox type="why" title="Perché il JavaScript ha bisogno di fetch()?">
+          JavaScript nel browser è <strong>isolato</strong> per sicurezza. Non può accedere direttamente
+          a file o database sul server. L'unico modo per comunicare è attraverso <strong>HTTP Request</strong>,
+          usando funzioni come <code className="bg-muted px-1 rounded">fetch()</code>.
+        </ExplainerBox>
+      </div>
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
-        className="max-w-2xl mx-auto"
+        className="max-w-2xl mx-auto mt-6"
       >
         <HighlightBox variant="warning" title="⚠️ Concetto chiave">
           Il browser è un ambiente <strong>isolato</strong>. Non ha accesso diretto ai dati del server.
