@@ -37,7 +37,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-background blueprint-grid">
+    <div className="flex min-h-screen bg-background">
       {/* Sidebar Navigation */}
       <ModuleNavigation 
         currentModule={currentModule} 
