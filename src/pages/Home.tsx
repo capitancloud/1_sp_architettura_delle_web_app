@@ -14,13 +14,13 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Web App 101
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 uppercase tracking-wide">
+              Architetture delle Web Application
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Impara come funziona davvero una web application full stack.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Integrazione al Progetto Formativo
               <br />
-              <span className="text-primary">Senza framework, senza magia.</span>
+              <span className="text-primary font-semibold">Super Programmatore</span>
             </p>
           </motion.div>
         </div>
