@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { versions } from "@/config/versions";
 import { Lock, ArrowRight, Sparkles } from "lucide-react";
+import { LogoutButton } from "@/components/LogoutButton";
 
 const Home = () => {
   return (
@@ -35,6 +36,10 @@ const Home = () => {
 
       {/* Header */}
       <header className="relative border-b border-border/50 backdrop-blur-sm">
+        {/* Logout Button */}
+        <div className="absolute top-4 right-4 z-10">
+          <LogoutButton className="text-muted-foreground hover:text-foreground hover:bg-muted/50" />
+        </div>
         <div className="max-w-6xl mx-auto px-6 py-12">
           <motion.div
             initial={{ opacity: 0, y: -30 }}
