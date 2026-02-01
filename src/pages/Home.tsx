@@ -52,7 +52,7 @@ const Home = () => {
             <motion.img
               src={superProgrammatoreLogo}
               alt="Super Programmatore Logo"
-              className="w-40 h-40 md:w-52 md:h-52 mx-auto mb-6 object-contain drop-shadow-2xl"
+              className="w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 mx-auto mb-6 object-contain drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
