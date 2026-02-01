@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { versions } from "@/config/versions";
 import { Lock, ArrowRight, Sparkles } from "lucide-react";
 import { LogoutButton } from "@/components/LogoutButton";
+import superProgrammatoreLogo from "@/assets/super-programmatore-logo.png";
 
 const Home = () => {
   return (
@@ -47,11 +48,22 @@ const Home = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center"
           >
+            {/* Logo */}
+            <motion.img
+              src={superProgrammatoreLogo}
+              alt="Super Programmatore Logo"
+              className="w-40 h-40 md:w-52 md:h-52 mx-auto mb-6 object-contain drop-shadow-2xl"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              whileHover={{ scale: 1.05, rotate: 2 }}
+            />
+
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.4 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
             >
               <Sparkles className="w-4 h-4" />
