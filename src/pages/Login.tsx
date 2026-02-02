@@ -74,7 +74,7 @@ const Login = () => {
             <motion.img
               src={superProgrammatoreLogo}
               alt="Super Programmatore Logo"
-              className="w-32 h-32 md:w-40 md:h-40 mx-auto object-contain drop-shadow-2xl"
+              className="w-44 h-44 md:w-56 md:h-56 mx-auto object-contain drop-shadow-2xl"
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
