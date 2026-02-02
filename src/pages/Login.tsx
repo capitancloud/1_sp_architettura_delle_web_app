@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Lock, KeyRound, Sparkles, AlertCircle } from "lucide-react";
+import superProgrammatoreLogo from "@/assets/super-programmatore-logo.png";
 
 const Login = () => {
   const [code, setCode] = useState("");
@@ -69,15 +70,16 @@ const Login = () => {
       >
         <Card className="border-2 border-border/50 backdrop-blur-sm bg-card/80 shadow-2xl">
           <CardHeader className="text-center space-y-4 pb-2">
-            {/* Logo/Icon */}
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
+            {/* Logo */}
+            <motion.img
+              src={superProgrammatoreLogo}
+              alt="Super Programmatore Logo"
+              className="w-32 h-32 md:w-40 md:h-40 mx-auto object-contain drop-shadow-2xl"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="mx-auto w-20 h-20 rounded-2xl bg-gradient-to-br from-client via-primary to-server flex items-center justify-center shadow-lg"
-            >
-              <Lock className="w-10 h-10 text-primary-foreground" />
-            </motion.div>
+              whileHover={{ scale: 1.05, rotate: 2 }}
+            />
 
             {/* Badge */}
             <motion.div
